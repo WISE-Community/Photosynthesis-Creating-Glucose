@@ -673,10 +673,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(75 85 99 / var(--tw-bg-opacity));
 }
 
-.disabled\:opacity-20:disabled {
-  opacity: 0.2;
-}
-
 .disabled\:opacity-50:disabled {
   opacity: 0.5;
 }

@@ -103,7 +103,22 @@ function initializeAnimation () {
 
 $(function() {
 	initializeAnimation();
+	setCanvasDimensions();
+
+	$(window).on('resize', function(){
+		setCanvasDimensions()
+	});
 });
+
+function setCanvasDimensions() {
+	var container = $("#modelWrapper")[0];
+  var ratio = canvasModel.getWidth() / canvasModel.getHeight();
+  const containerWidth = container.clientWidth > 1000 ? 1000 : container.clientWidth;
+  const scale = containerWidth / canvasModel.getWidth();
+  const zoom = canvasModel.getZoom() * scale;
+  canvasModel.setDimensions({ width: containerWidth, height: containerWidth / ratio });
+  canvasModel.setViewportTransform([zoom, 0, 0, zoom, 0, 0]);
+}
 
 var chlorophyll1 = null;
 fabric.Image.fromURL("./assets/dominoH2O.png", function (img) {
