@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<title>Photosynthesis Creating Glucose</title>
+<head>
+  <meta charset="utf-8" />
+  <script src="https://code.iconify.design/2/2.1.2/iconify.min.js"></script>
+  <script src="./jquery-3.2.1.min.js"></script>
+  <script src="./fabric.min.js"></script>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <div class="controls p-2 bg-gray-800 text-white">
+    <div class="flex flex-wrap items-center gap-2">
+      <span>Starting materials:</span>
+      <div class="text-xl">
+        <input
+          class="text-center 
+              text-gray-900
+              rounded-md
+              border-neutral-500
+              border-2
+              bg-gray-100
+              w-14
+              focus:bg-white
+              focus:border-blue-500"
+          title="Number of C02"
+          type="number"
+          id="co2Input"
+          max="12"
+          min="0"
+          value="0" /> CO<sub>2</sub> +
+        <input
+          class="text-center
+              text-gray-900
+              rounded-md
+              border-neutral-500
+              border-2
+              bg-gray-100
+              w-14
+              focus:bg-white
+              focus:border-blue-500"
+          title="Number of H2O"
+          type="number"
+          id="h2oInput"
+          max="12"
+          min="0"
+          value="0" /> H<sub>2</sub>O = ??
+      </div>
+      <span class="flex-1"></span>
+      <div class="text-base gap-x-2 gap-y-2 flex">
+        <button id="start"
+            title="Start the animation"
+            class="flex
+                items-center
+                gap-x-2
+                bg-gray-600
+                px-2
+                py-1
+                rounded-md
+                hover:bg-gray-500
+                focus:bg-gray-500
+                disabled:opacity-50
+                disabled:bg-gray-600">
+          <span class="iconify inline" data-icon="fa-solid:play"></span>
+          <span>Run</span>
+        </button>
+        <button id="replay"
+            title="Replay the animation"
+            class="flex
+                items-center
+                gap-x-2
+                bg-gray-600
+                px-2
+                py-1
+                rounded-md
+                hover:bg-gray-500
+                focus:bg-gray-500
+                disabled:opacity-50
+                disabled:bg-gray-600"
+            disabled>
+          <span class="iconify inline" data-icon="fa:refresh"></span>
+          <span>Replay</span>
+        </button>
+        <button id="resetAnimation"
+            title="Reset the animation"
+            class="flex
+                items-center
+                gap-x-2
+                bg-gray-600
+                px-2
+                py-1
+                rounded-md
+                hover:bg-gray-500
+                focus:bg-gray-500
+                disabled:opacity-50">
+          <span class="iconify inline" data-icon="fa:power-off"></span>
+          <span>Reset</span>
+        </button>
+      </div>
+    </div>
+    <div class="flex flex-wrap w-full items-center justify-start gap-x-6 gap-y-2 pt-2 text-base">
+      <div class="flex gap-x-2">
+        <label class="inline-flex items-center">
+          <input type="checkbox" id="lightOn" class="w-6 h-6 rounded" checked />
+          <span class="ml-2">Light On</span>
+        </label>
+        <label class="inline-flex items-center gap-x-2">
+          <span class="ml-2">Speed:</span>
+          <input type="range" max="3" min="1" step="1" value="2" class="w-16 h-6" id="speedSwitch" title="Change animation speed" />
+          <span id="currentSpeed"></span>
+        </label>
+      </div>
+      <span class="flex-1"></span>
+      <div class="flex items-center text-base gap-x-2 text-neutral-300" id="water" style="z-index:4">
+        <img src="./assets/water.png" alt="Water molecule" class="icon">
+        <span id="totalH2O"></span>
+      </div>
+    </div> 
+  </div>
+  <div class="legend p-2 flex flex-wrap items-center gap-x-3 gap-y-2 text-base bg-gray-200">
+    <span class="font-bold">Legend:</span>
+    <span class="flex gap-1">
+      <img src="./assets/hydrogen.png" alt="Hydrogen Atom" class="icon">
+      <span>Hydrogen Atom</span>
+    </span>
+    <span class="flex gap-1">
+      <img src="./assets/oxygenAtom.png" alt="Oxygen Atom" class="icon">
+      <span>Oxygen Atom</span>
+    </span>
+    <span class="flex gap-1">
+      <img src="./assets/oxygen.png" alt="Oxygen Gas" class="icon">
+      <span>Oxygen Gas</span>
+    </span>
+    <span class="flex gap-1">
+      <img src="./assets/water.png" alt="Water Molecule" class="icon">
+      <span>Water</span>
+    </span>
+    <span class="flex gap-1">
+      <img src="./assets/photon.png" alt="Light Energy (photon)" class="icon">
+      <span>Light Energy</span>
+    </span>
+    <span class="flex gap-1">
+      <img src="./assets/CarbonDioxide.png" alt="Carbon Dioxide" class="icon">
+      <span>Carbon Dioxide</span>
+    </span>
+    <span class="flex gap-1">
+      <img src="./assets/energyCarrierEMPTY.png" alt="Energy Carrier (empty)" class="icon">
+      <img src="./assets/energyCarrierFULL.png" alt="Energy Carrier (full)" class="icon">
+      <span>Energy Carrier</span>
+    </span>
+    <span class="flex gap-1">
+      <img src="./assets/glucose.png" alt="Glucose" class="icon">
+      <span>Glucose</span>
+    </span>
+  </div>
+  <canvas id="model" width="1000" height="525"></canvas>
+
+  <script src="./main.js"></script>
+</body>
+
+</html>

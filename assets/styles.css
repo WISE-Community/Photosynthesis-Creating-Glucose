@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.controls, .legend {
+  max-width: 1000px;
+}
+
+.model {
+  z-index: 1;
+}
+
+.icon {
+  height: 20px;
+  width: auto;
+}

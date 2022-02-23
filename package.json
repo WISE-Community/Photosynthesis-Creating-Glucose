@@ -1,0 +1,22 @@
+{
+  "name": "photosynthesis-creating-glucose",
+  "description": "Photosynthesis model illustrating glucose production",
+  "version": "2.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Korah Wiley"
+  },
+  "contributors": [
+    {
+      "name": "Jonathan Lim-Breitbart"
+    }
+  ],
+  "homepage": ".",
+  "devDependencies": {
+    "tailwindcss": "^3.0.23"
+  },
+  "scripts": {
+    "watch-css": "npx tailwindcss -i ./assets/styles.css -o ./styles.css --watch",
+    "build-css": "npx tailwindcss -i ./assets/styles.css -o ./styles.css"
+  }
+}

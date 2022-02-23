@@ -1,18 +1,5 @@
-// create two canvases with id model and controls, respectively
-
-//make the model canvas background color light blue and objects selectable
-	/*var canvasModel = new fabric.Canvas('model', {
-	backgroundColor: 'rgb(173,216,230)'
-}); */
-
 var canvasModel = this.__canvas = new fabric.StaticCanvas('model',{
 	backgroundColor: 'rgb(173,216,230)'
-});
-//canvasModel.setDimensions({width: '100%',height: '100%',});
-
-// make the model canvas background color light gray and objects NOT selectable
-var canvasControls = this.__canvas = new fabric.StaticCanvas('controls', {
-	backgroundColor: '#dbdbdb'
 });
 
 // Elements on Model Canvas
@@ -99,118 +86,6 @@ fabric.Image.fromURL("./assets/glucoseMachine.png", function (img) {
   canvasModel.add(img);
 });
 
-var iconLegend = null;
-fabric.Image.fromURL("./assets/iconLegend.png", function (img) {
-  img.scale(0.195);
-  img.setLeft(7);
-  img.setWidth(2490);
-  img.setHeight(860);
-  iconLegend = img;
-  canvasControls.add(img);
-});
-
-canvasControls.add(new fabric.Line([0, 0, 0, 300], {
-        left: 492,
-        top: -3,
-        stroke: 'black',
-        strokeWidth: 6
-    }));
-
-canvasControls.add(new fabric.Line([0, 0, 0, 300], {
-        left: 822,
-        top: -3,
-        stroke: 'black',
-        strokeWidth: 6
-    }));
-/*
-var energyWheel = null;
-fabric.Image.fromURL('./energyWheel.png', function(img){
-	img.scale(0.25);
-	img.setLeft(747);
-	img.setTop(473);
-	img.set({originX: 'center'});
-	img.set({originY: 'center'});
-	energyWheel = img;
-	canvasModel.add(img)
-});
-
-var chlorophyll1 = null;
-fabric.Image.fromURL('./chlorophyllNet.png', function(img){
-	img.scale(0.3);
-	img.setAngle(-38);
-	img.setLeft(204);
-	img.setTop(505);
-	chlorophyll1 = img;
-	canvasModel.add(img)
-});
-
-var chlorophyll2 = null;
-fabric.Image.fromURL('./chlorophyllNet.png', function(img){
-	img.scale(0.3);
-	img.setAngle(-17);
-	img.setLeft(412);
-	img.setTop(435);
-	chlorophyll2 = img;
-	canvasModel.add(img)
-});
-
-var H2Oa = null;
-fabric.Image.fromURL('./water.png', function(img){
-	img.scale(0.6);
-	img.setOriginX('left');
-	img.setOriginY('top');
-	img.setLeft(272);
-	img.setTop(507);
-	H2Oa = img;
-	canvasModel.add(img);
-});
-
-var H2Ob = null;
-fabric.Image.fromURL('./water.png', function(img){
-	img.scale(0.6);
-	img.setOriginX('left');
-	img.setOriginY('top');
-	img.setLeft(322);
-	img.setTop(487);
-	H2Ob = img;
-	canvasModel.add(img);
-});
-
-var thing = null;
-fabric.Image.fromURL('./photon.png', function(img) {
-	img.scale(0.35);
-	img.setAngle(140);
-	img.setOriginX('left');
-	img.setOriginY('top');
-	img.setLeft(262);
-	img.setTop(502);
-	thing = img;
-	canvasModel.add(img);
-});
-
-var thing1 = null;
-fabric.Image.fromURL('./photon.png', function(img) {
-	img.scale(0.35);
-	img.setAngle(140);
-	img.setOriginX('left');
-	img.setOriginY('top');
-	img.setLeft(305);
-	img.setTop(483);
-	thing1 = img;
-	canvasModel.add(img);
-});
-
-var energyCarrierEMPTY1 = null;
-fabric.Image.fromURL('./energyCarrierEMPTY.png', function(img){
-	img.scale(0.15);
-	img.setAngle(153);
-	img.setLeft(834);
-	img.setTop(460);
-	energyCarrierEMPTY1 = img;
-	canvasModel.add(img)
-});
-*/
-
 // Calls the function to initialize ALL the objects
 
 function initializeAnimation () {
@@ -219,14 +94,16 @@ function initializeAnimation () {
 	initializePhase3Objects();
 	initializePhase4Objects();
 	$("#equation").html("____CO<sub>2</sub>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;____H<sub>2</sub>O&nbsp;&nbsp;=&nbsp;&nbsp;???");
-	$("#speedSwitch").val(1);
+	$('#speedSwitch').val(2).trigger('change');
+	$('#co2Input, #h2oInput').val(0).trigger('change');
 	$("#lightOn").prop('checked', true);
 	$('#water').hide();
 	initializeTrialData();
 }
 
-initializeAnimation();
-
+$(function() {
+	initializeAnimation();
+});
 
 var chlorophyll1 = null;
 fabric.Image.fromURL("./assets/dominoH2O.png", function (img) {
@@ -325,89 +202,9 @@ var chargeBlocks = new fabric.Text("Charging Blocks", {
   fontSize: 24,
   fontWeight: "bold",
   left: 585,
-  top: 495,
+  top: 485,
 });
 canvasModel.add(chargeBlocks);
-// Elements on Controls Canvas
-
-//Adds dividing line between panels
-/*
-canvasControls.add(new fabric.Line([0, 0, 0, 300], {
-        left: 660,
-        top: -5,
-        stroke: 'black',
-        strokeWidth: 6
-    }));
-
-var hereChloroplast = null;
-fabric.Image.fromURL('./hereChloroplast.png', function(img){
-	img.scale(0.33);
-	img.setLeft(2);
-	//img.setTop(8);
-	img.setWidth(1150);
-	img.setHeight(860);
-	hereChloroplast = img;
-	canvasControls.add(img)
-});
-
-var inputsLabel = new fabric.Text('Click Icons to Add', {
-	fontSize: 24,
-	fontFamily: 'calibri',
-	fontWeight: 'bold',
-	left: 435,
-	top: 5,
-	textDecoration: 'underline'
-	});
-canvasControls.add(inputsLabel)
-
-var inputTotalLabel = new fabric.Text('Totals', {
-	fontSize: 20,
-	fontFamily: 'calibri',
-	fontWeight: 'bold',
-	left: 590,
-	top: 37
-	});
-canvasControls.add(inputTotalLabel)
-
-var carbDioxLabel = new fabric.Text('Carbon Dioxide (CO2)', {
-	fontSize: 16,
-	fontFamily: 'calibri',
-	fontWeight: 'bold',
-	left: 405,
-	top: 190
-	});
-canvasControls.add(carbDioxLabel)
-
-var carbDioxControl = null;
-fabric.Image.fromURL('./carbonDioxide.png', function(img){
-	img.scale(0.45);
-	img.setAngle(22);
-	img.setLeft(430);
-	img.setTop(210);
-	carbDioxControl = img;
-	canvasControls.add(img)
-});
-
-var hydroAtomLabel = new fabric.Text('Hydrogen Atom', {
-	fontSize: 16,
-	fontFamily: 'calibri',
-	fontWeight: 'bold',
-	left: 405,
-	top: 40
-	});
-canvasControls.add(hydroAtomLabel)
-
-var hydroAtomControl = null;
-fabric.Image.fromURL('./hydrogen.png', function(img){
-	img.scale(0.45);
-	img.setAngle(22);
-	img.setLeft(440);
-	img.setTop(65);
-	carbDioxControl = img;
-	canvasControls.add(img)
-});
-*/
-
 
 //Phase 1 of the reaction
 // Creates arrays for all the objects that have been initialized
@@ -523,54 +320,16 @@ function initializePhase1Objects() {
 // *** Non-canvas Controls ***//
 
 $("#start").on('click', function() {
-	$("#equation").html("&nbsp;&nbsp;" + carbDioxCounter + "&nbsp;&nbsp;&nbsp;&nbsp;CO<sub>2</sub>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;" +  "&nbsp;" + waterCounter + "&nbsp;&nbsp;&nbsp;&nbsp;H<sub>2</sub>O&nbsp;&nbsp;=&nbsp;&nbsp;???");
+	// $("#equation").html("&nbsp;&nbsp;" + carbDioxCounter + "&nbsp;&nbsp;&nbsp;&nbsp;CO<sub>2</sub>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;" +  "&nbsp;" + waterCounter + "&nbsp;&nbsp;&nbsp;&nbsp;H<sub>2</sub>O&nbsp;&nbsp;=&nbsp;&nbsp;???");
 	animationStart();
 });
 
-$("#addCO2").on('click', function() {
-	carbDioxCounter += 1;
-	if (carbDioxCounter > 12) {
-		carbDioxCounter = 12;
-	} else {
-		$("#equation").html("&nbsp;&nbsp;" + carbDioxCounter + "&nbsp;&nbsp;&nbsp;&nbsp;CO<sub>2</sub>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;" +  "&nbsp;" + waterCounter + "&nbsp;&nbsp;&nbsp;&nbsp;H<sub>2</sub>O&nbsp;&nbsp;=&nbsp;&nbsp;???");
-	}
+$('#co2Input').on('change', function () {
+  carbDioxCounter = $(this).val();
 });
 
-$("#subtractCO2").on('click', function() {
-	carbDioxCounter -= 1;
-	if (carbDioxCounter < 0) {
-		carbDioxCounter = 0;
-	} else {
-		$("#equation").html("&nbsp;&nbsp;" + carbDioxCounter + "&nbsp;&nbsp;&nbsp;&nbsp;CO<sub>2</sub>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;" +  "&nbsp;" + waterCounter + "&nbsp;&nbsp;&nbsp;&nbsp;H<sub>2</sub>O&nbsp;&nbsp;=&nbsp;&nbsp;???");
-	}
-});
-
-$("#resetCO2").on('click', function() {
-	carbDioxCounter = 0;
-	$("#equation").html("&nbsp;&nbsp;" + carbDioxCounter + "&nbsp;&nbsp;&nbsp;&nbsp;CO<sub>2</sub>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;" +  "&nbsp;" + waterCounter + "&nbsp;&nbsp;&nbsp;&nbsp;H<sub>2</sub>O&nbsp;&nbsp;=&nbsp;&nbsp;???");
-});
-
-$("#addH2O").on('click', function() {
-	waterCounter += 1;
-	if (waterCounter > 12) {
-		waterCounter = 12;
-	} else {
-		$("#equation").html("&nbsp;&nbsp;" + carbDioxCounter + "&nbsp;&nbsp;&nbsp;&nbsp;CO<sub>2</sub>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;" +  "&nbsp;" + waterCounter + "&nbsp;&nbsp;&nbsp;&nbsp;H<sub>2</sub>O&nbsp;&nbsp;=&nbsp;&nbsp;???");
-	}
-});
-
-$("#subtractH2O").on('click', function() {
-	waterCounter -= 1;
-	if (waterCounter < 0) {
-		waterCounter = 0;
-	} else {
-		$("#equation").html("&nbsp;&nbsp;" + carbDioxCounter + "&nbsp;&nbsp;&nbsp;&nbsp;CO<sub>2</sub>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;" +  "&nbsp;" + waterCounter + "&nbsp;&nbsp;&nbsp;&nbsp;H<sub>2</sub>O&nbsp;&nbsp;=&nbsp;&nbsp;???");
-	}
-});
-
-$("#resetH2O").on('click', function() {
-	waterCounter = 0;
-	$("#equation").html("&nbsp;&nbsp;" + carbDioxCounter + "&nbsp;&nbsp;&nbsp;&nbsp;CO<sub>2</sub>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;" +  "&nbsp;" + waterCounter + "&nbsp;&nbsp;&nbsp;&nbsp;H<sub>2</sub>O&nbsp;&nbsp;=&nbsp;&nbsp;???");
+$('#h2oInput').on('change', function () {
+  waterCounter = $(this).val();
 });
 
 $("#resetAnimation").on('click', function() {
@@ -583,25 +342,27 @@ $("#replay").on('click', function() {
 
 $("#speedSwitch").on("change", function() {
 	var speedSwitchValue = $(this).val();
-	if (speedSwitchValue == 1) {
-		 time = 1;
-	} else if (speedSwitchValue == 2) {
-		 time = 0.5;
+  var displayValue = "";
+  if (speedSwitchValue == 1) {
+    time = 1;
+    displayValue = "Slow";
+  } else if (speedSwitchValue == 2) {
+    time = 0.5;
+    displayValue = "1x";
+  } else {
+    time = 0.25;
+    displayValue = "2x";
+  }
+  $("#currentSpeed").text(displayValue);
+});
+
+$('#lightOn').on('change', function() {
+	if ($(this).is(':checked')) {
+		canvasModel.setOverlayColor("rgba(0, 0, 0, 0)", canvasModel.renderAll.bind(canvasModel));
 	} else {
-		 time = 0.25;
+		canvasModel.setOverlayColor("rgba(0, 0, 0, 0.2)", canvasModel.renderAll.bind(canvasModel));
 	}
 });
-
-var darknessOverlay = null;
-
-$("#lightOff").on("click", function() {
-	canvasModel.setOverlayColor('rgba(0, 0, 0, 0.2)', canvasModel.renderAll.bind(canvasModel));
-});
-
-$("#lightOn").on("click", function() {
-	canvasModel.setOverlayColor('rgba(0, 0, 0, 0)', canvasModel.renderAll.bind(canvasModel));
-});
-
 
 var lowReactantsAlert = null;
 fabric.Image.fromURL("./assets/lowReactantsAlert.jpg", function (img) {
@@ -614,7 +375,6 @@ fabric.Image.fromURL("./assets/lowReactantsAlert.jpg", function (img) {
 function lowAlertDelay() {
 	var pause = setTimeout(lowAlert, (2500 * time));
 }
-
 
 function lowAlert() {
 	alertType = "lowReactantsAlert";
@@ -629,50 +389,24 @@ function lowAlert() {
 function animationStart() {
 	// add the new trial to the array of trials
 	remainingNumH2O = waterCounter;
+	$('#start, #resetAnimation, #replay, #lightOn, #co2Input, #h2oInput, #speedSwitch').prop('disabled', true);
 	if (carbDioxCounter == 0 && waterCounter == 0) {
-		$("#totalH2O").html("Total H<sub>2</sub>O = " + waterCounter);
-		$("#start").prop('disabled', true);
-		$("#addCO2").prop('disabled', true);
-		$("#subtractCO2").prop('disabled', true);
-		$("#resetCO2").prop('disabled', true);
-		$("#addH2O").prop('disabled', true);
-		$("#subtractH2O").prop('disabled', true);
-		$("#resetH2O").prop('disabled', true);
-		$("#resetAnimation").prop('disabled', true);
-		$("#replay").prop('disabled', true);
+		$("#totalH2O").html("Remaining H<sub>2</sub>O = " + waterCounter);
 		alert("THE REACTION FAILED!\n\nLook at the message for more information.");
 		canvasModel.add(lowReactantsAlert);
-		if ($("#lightOff").is(':checked')) {
+		if (!$("#lightOn").is(':checked')) {
 			lightOnOff = "off";
 		}
 		alertType = "lowReactantsAlert";
 		addNewTrial();
 		$("#resetAnimation").prop('disabled', false);
 		$("#replay").prop('disabled', false);
-	} else if (carbDioxCounter > 0 && waterCounter == 0 && ($("#lightOff").is(':checked'))){
-		$("#totalH2O").html("Total H<sub>2</sub>O = " + waterCounter);
-		$("#start").prop('disabled', true);
-		$("#addCO2").prop('disabled', true);
-		$("#subtractCO2").prop('disabled', true);
-		$("#resetCO2").prop('disabled', true);
-		$("#addH2O").prop('disabled', true);
-		$("#subtractH2O").prop('disabled', true);
-		$("#resetH2O").prop('disabled', true);
-		$("#resetAnimation").prop('disabled', true);
-		$("#replay").prop('disabled', true);
+	} else if (carbDioxCounter > 0 && waterCounter == 0 && (!$("#lightOn").is(':checked'))){
+		$("#totalH2O").html("Remaining H<sub>2</sub>O = " + waterCounter);
 		addCarbonDioxide();
 		lowAlertDelay();
-		} else {
-		$("#totalH2O").html("Total H<sub>2</sub>O = " + waterCounter);
-		$("#start").prop('disabled', true);
-		$("#addCO2").prop('disabled', true);
-		$("#subtractCO2").prop('disabled', true);
-		$("#resetCO2").prop('disabled', true);
-		$("#addH2O").prop('disabled', true);
-		$("#subtractH2O").prop('disabled', true);
-		$("#resetH2O").prop('disabled', true);
-		$("#resetAnimation").prop('disabled', true);
-		$("#replay").prop('disabled', true);
+	} else {
+		$("#totalH2O").html("Remaining H<sub>2</sub>O = " + waterCounter);
 		addCarbonDioxide();
 		addWater();
 	}
@@ -702,7 +436,7 @@ function addCarbonDioxide() {
 var waterLoopCounter = 0;
 
 function addWater() {
-	if (remainingNumH2O == 0 && ($("#lightOff").is(':checked'))) {
+	if (remainingNumH2O == 0 && (!$("#lightOn").is(':checked'))) {
 		return;
 	} else if (remainingNumH2O == 0) {
 		addPhotons();
@@ -837,7 +571,7 @@ function initializePhase2Objects() {
 }
 
 var chlorophyllLightAlert = null;
-fabric.Image.fromURL('./chlorophyllLightAlert.jpg', function(img) {
+fabric.Image.fromURL('./assets/chlorophyllLightAlert.jpg', function(img) {
 	img.scale(0.6);
 	img.setLeft(50);
 	img.setTop(50);
@@ -845,7 +579,7 @@ fabric.Image.fromURL('./chlorophyllLightAlert.jpg', function(img) {
 });
 
 function addPhotons() {
-	if ($("#lightOff").is(':checked')) {
+	if (!$("#lightOn").is(':checked')) {
 		alert("THE REACTION FAILED!\n\nLook at the message for more information.");
 		canvasModel.add(chlorophyllLightAlert);
 		alertType = "chlorophyllLightAlert";
@@ -1730,22 +1464,15 @@ function resetCascade() {
 }
 
 function resetAll() {
-	$("#start").prop('disabled', false);
-	$("#addCO2").prop('disabled', false);
-	$("#subtractCO2").prop('disabled', false);
-	$("#resetCO2").prop('disabled', false);
-	$("#addH2O").prop('disabled', false);
-	$("#subtractH2O").prop('disabled', false);
-	$("#resetH2O").prop('disabled', false);
-	$("#resetAnimation").prop('disabled', false);
-	$("#replay").prop('disabled', true);
-	$("#equation").html("____CO<sub>2</sub>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;____H<sub>2</sub>O&nbsp;&nbsp;=&nbsp;&nbsp;???");
+	$('#start, #resetAnimation, #lightOn, #co2Input, #h2oInput, #speedSwitch').prop('disabled', false);
+	$('#replay').prop('disabled', true);
+	// $("#equation").html("____CO<sub>2</sub>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;____H<sub>2</sub>O&nbsp;&nbsp;=&nbsp;&nbsp;???");
 	$("#totalH2O").html("");
 	$('#water').hide();
-	$("#speedSwitch").val(1);
+	$('#co2Input, #h2oInput').val(0).trigger('change');
+	$('#speedSwitch').val(2).trigger('change');
 	$("#lightOn").prop('checked', true);
 	canvasModel.setOverlayColor('rgba(0, 0, 0, 0)', canvasModel.renderAll.bind(canvasModel));
-	time = 1;
 	waterCounter = 0;
 	carbDioxCounter = 0;
 	waterLoopCounter = 0;
@@ -1780,22 +1507,13 @@ function resetAll() {
 }
 
 function replay() {
-	$("#start").prop('disabled', false);
-	$("#addCO2").prop('disabled', false);
-	$("#subtractCO2").prop('disabled', false);
-	$("#resetCO2").prop('disabled', false);
-	$("#addH2O").prop('disabled', false);
-	$("#subtractH2O").prop('disabled', false);
-	$("#resetH2O").prop('disabled', false);
-	$("#resetAnimation").prop('disabled', false);
-	$("#replay").prop('disabled', true);
+	$('#start, #resetAnimation, #lightOn, #co2Input, #h2oInput, #speedSwitch').prop('disabled', false);
+	$('#replay').prop('disabled', true);
 	$("#equation").html("&nbsp;&nbsp;" + carbDioxCounter + "&nbsp;&nbsp;&nbsp;&nbsp;CO<sub>2</sub>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;" +  "&nbsp;" + waterCounter + "&nbsp;&nbsp;&nbsp;&nbsp;H<sub>2</sub>O&nbsp;&nbsp;=&nbsp;&nbsp;???");
 	$("#totalH2O").html("");
 	$('#water').hide();
-	$("#speedSwitch").val(1);
 	$("#lightOn").prop('checked', true);
 	canvasModel.setOverlayColor('rgba(0, 0, 0, 0)', canvasModel.renderAll.bind(canvasModel));
-	time = 1;
 	waterLoopCounter = 0;
 	remainingNumH2O = waterCounter;
 	canvasModel.remove(releasedGasText);
@@ -1847,9 +1565,9 @@ function logSpecifications(ctx){
 canvasModel.on ({
       'object:selected': logSpecifications
   });
-canvasControls.on ({
-      'object:selected': logSpecifications
-  });
+// canvasControls.on ({
+//       'object:selected': logSpecifications
+//   });
 // another way to set the canvas background image
 //canvas.setBackgroundImage('./chloroplast.jpg', canvas.renderAll.bind(canvas));
 
