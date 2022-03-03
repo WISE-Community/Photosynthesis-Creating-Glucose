@@ -23,6 +23,7 @@ var waterCounter = 0;
 var remainingNumH2O;
 var glucoseMade = false;
 var time = 1;
+var isPaused = false;
 
 var latestComponentStateId = null;
 
@@ -45,8 +46,8 @@ function addNewTrial() {
 		trialData.madeSingleOxy = madeSingleOxy;
 		trialData.madeGlucose = madeGlucose;
 		trialData.lightOnOff = lightOnOff;
-		var time = Date.now();
-		trialData.clientSaveTime = time;
+		var saveTime = Date.now();
+		trialData.clientSaveTime = saveTime;
 
 		trials.push(trialData);
 		save();
@@ -335,8 +336,17 @@ function initializePhase1Objects() {
 // *** Non-canvas Controls ***//
 
 $("#start").on('click', function() {
-	// $("#equation").html("&nbsp;&nbsp;" + carbDioxCounter + "&nbsp;&nbsp;&nbsp;&nbsp;CO<sub>2</sub>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;" +  "&nbsp;" + waterCounter + "&nbsp;&nbsp;&nbsp;&nbsp;H<sub>2</sub>O&nbsp;&nbsp;=&nbsp;&nbsp;???");
-	animationStart();
+	if (isPaused) {
+		isPaused = false;
+		continueAnimation();
+	} else {
+		animationStart();
+	}
+});
+
+$("#pause").on("click", function () {
+	$('#pause').prop('disabled', true);
+	isPaused = true;
 });
 
 $('#co2Input').on('change', function () {
@@ -397,14 +407,14 @@ function lowAlert() {
 	canvasModel.add(lowReactantsAlert);
 	lightOnOff = "off";
 	addNewTrial();
-	$("#resetAnimation").prop('disabled', false);
-	$("#replay").prop('disabled', false);
+	resetPlaybackButtons();
 }
 
 function animationStart() {
 	// add the new trial to the array of trials
 	remainingNumH2O = waterCounter;
-	$('#start, #resetAnimation, #replay, #lightOn, #co2Input, #h2oInput, #speedSwitch').prop('disabled', true);
+	$('#start, #resetAnimation, #replay, #lightOn, #co2Input, #h2oInput').prop('disabled', true);
+	$('#pause').prop('disabled', false);
 	if (carbDioxCounter == 0 && waterCounter == 0) {
 		$("#totalH2O").html("Remaining H<sub>2</sub>O = " + waterCounter);
 		alert("THE REACTION FAILED!\n\nLook at the message for more information.");
@@ -414,8 +424,7 @@ function animationStart() {
 		}
 		alertType = "lowReactantsAlert";
 		addNewTrial();
-		$("#resetAnimation").prop('disabled', false);
-		$("#replay").prop('disabled', false);
+		resetPlaybackButtons();
 	} else if (carbDioxCounter > 0 && waterCounter == 0 && (!$("#lightOn").is(':checked'))){
 		$("#totalH2O").html("Remaining H<sub>2</sub>O = " + waterCounter);
 		addCarbonDioxide();
@@ -465,7 +474,7 @@ function addWater() {
 		moveWater2();
 		return;
 	}
-	}
+}
 
 function moveWater1() {
 	var water1 = getH2O(1);
@@ -600,8 +609,7 @@ function addPhotons() {
 		alertType = "chlorophyllLightAlert";
 		lightOnOff = "off";
 		addNewTrial();
-		$("#resetAnimation").prop('disabled', false);
-		$("#replay").prop('disabled', false);
+		resetPlaybackButtons();
 		return;
 	} else {
 		var photon1HasH2O = false;
@@ -645,8 +653,7 @@ function movePhoton1(hasH20) {
 						canvasModel.add(chlorophyllWaterAlert);
 						alertType = "chlorophyllWaterAlert";
 						addNewTrial();
-						$("#resetAnimation").prop('disabled', false);
-						$("#replay").prop('disabled', false);
+						resetPlaybackButtons();
 						return;
 					} else {
 						var waterSplitSound = new Audio("./assets/waterSplitSound.mp3");
@@ -721,8 +728,7 @@ function movePhoton2 (hasH20) {
 							alertType = "chlorophyllWaterAlert";
 							addNewTrial();
 						}
-						$("#resetAnimation").prop('disabled', false);
-						$("#replay").prop('disabled', false);
+						resetPlaybackButtons();
 						return;
 					} else {
 						waterLoopCounter += 1;
@@ -1075,7 +1081,6 @@ function initializePhase3Objects() {
 	initializeSingleOxy();
 }
 
-
 function deathAlertDelay() {
 	var pause = setTimeout(deathAlert, (7500 * time));
 }
@@ -1094,8 +1099,7 @@ function deathAlert() {
 	alertType = "singleOxygenAlert";
 	madeSingleOxy = "yes";
 	addNewTrial();
-	$("#resetAnimation").prop('disabled', false);
-	$("#replay").prop('disabled', false);
+	resetPlaybackButtons();
 }
 
 function formH20() {
@@ -1213,6 +1217,16 @@ function resetForWaterLoop() {
 	atpDomino2.setTop(425);
 	canvasModel.add(atpDomino2);
 	canvasModel.add(energyCarrierEMPTY99);
+	if (isPaused) {
+		$('#start').prop('disabled', false);
+	} else {
+		continueAnimation();
+	}
+}
+
+function continueAnimation() {
+	$('#pause').prop('disabled', false);
+	$('#start').prop('disabled', true);
 	energyCarrierEMPTY99.animate({left: 613, top: 395}, {
 		duration: (3000 * time),
 		onChange: canvasModel.renderAll.bind(canvasModel)
@@ -1233,13 +1247,11 @@ function resetForWaterLoop() {
 		canvasModel.add(lowReactantsAlert);
 		alertType = "lowReactantsAlert";
 		addNewTrial();
-		$("#resetAnimation").prop('disabled', false);
-		$("#replay").prop('disabled', false);
+		resetPlaybackButtons();
 		return;
 	} else if (glucoseMade && carbDioxCounter > 6) {
 		alert("The glucose reaction can only use 6 CO2 at a time.");
-		$("#resetAnimation").prop('disabled', false);
-		$("#replay").prop('disabled', false);
+		resetPlaybackButtons();
 		collectMolecules();
 	} else if (glucoseMade) {
 		collectMolecules();
@@ -1306,14 +1318,12 @@ function makeGroup() {
 		canvasModel.add(lowReactantsAlert);
 		alertType = "lowReactantsAlert";
 		addNewTrial();
-		$("#resetAnimation").prop('disabled', false);
-		$("#replay").prop('disabled', false);
+		resetPlaybackButtons();
 		return;
 	} else {
 		makeGlucose();
 	}
 }
-
 
 // Phase 4 Objects
 var glucose = null;
@@ -1415,16 +1425,14 @@ function success() {
 		alertType = "extraCO2Alert";
 		madeGlucose = "yes";
 		addNewTrial();
-		$("#resetAnimation").prop('disabled', false);
-		$("#replay").prop('disabled', false);
+		resetPlaybackButtons();
 	} else {
 		alert("CONGRATULATIONS!");
 		canvasModel.add(successMessage);
 		alertType = "successMessage";
 		madeGlucose = "yes";
 		addNewTrial();
-		$("#resetAnimation").prop('disabled', false);
-		$("#replay").prop('disabled', false);
+		resetPlaybackButtons();
 		return;
 	}
 }
@@ -1452,6 +1460,21 @@ function makeGlucose() {
 }
 
 function resetCascade() {
+	$("#start, #resetAnimation, #lightOn, #co2Input, #h2oInput, #speedSwitch").prop("disabled", false);
+  $("#replay, #pause").prop("disabled", true);
+  $("#totalH2O").html("");
+  $("#water").hide();
+	$("#lightOn").prop("checked", true);
+	canvasModel.setOverlayColor("rgba(0, 0, 0, 0)", canvasModel.renderAll.bind(canvasModel));
+	waterLoopCounter = 0;
+  remainingNumH2O = waterCounter;
+  canvasModel.remove(releasedGasText);
+  canvasModel.remove(lowReactantsAlert);
+  canvasModel.remove(chlorophyllWaterAlert);
+  canvasModel.remove(chlorophyllLightAlert);
+  canvasModel.remove(extraCO2Alert);
+  canvasModel.remove(singleOxygenAlert);
+  canvasModel.remove(successMessage);
 	chlorophyll1.setAngle(0);
 	chlorophyll1.setLeft(240);
 	chlorophyll1.setTop(445);
@@ -1476,88 +1499,42 @@ function resetCascade() {
 	energyCarrierEMPTY99.setLeft(613);
 	energyCarrierEMPTY99.setTop(395);
 	canvasModel.add(energyCarrierEMPTY99);
+	resetCO2Objects();
+  resetH2OObjects();
+  resetPhotonObjects();
+  resetOxyObjects();
+  resetHydroObjects();
+  resetOxyGasObjects();
+  resetFullCarrierObjects();
+  resetHydroInputObjects();
+  resetWaterOutputObjects();
+  resetEnergyOutputObjects();
+  resetSingleOxyObjects();
+  initializePhase1Objects();
+  initializePhase2Objects();
+  initializePhase3Objects();
+  initializePhase4Objects();
+  initializeTrialData();
+  if (glucoseMade) {
+    canvasModel.remove(glucose);
+  }
 }
 
 function resetAll() {
-	$('#start, #resetAnimation, #lightOn, #co2Input, #h2oInput, #speedSwitch').prop('disabled', false);
-	$('#replay').prop('disabled', true);
-	// $("#equation").html("____CO<sub>2</sub>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;____H<sub>2</sub>O&nbsp;&nbsp;=&nbsp;&nbsp;???");
-	$("#totalH2O").html("");
-	$('#water').hide();
 	$('#co2Input, #h2oInput').val(0).trigger('change');
 	$('#speedSwitch').val(2).trigger('change');
-	$("#lightOn").prop('checked', true);
-	canvasModel.setOverlayColor('rgba(0, 0, 0, 0)', canvasModel.renderAll.bind(canvasModel));
 	waterCounter = 0;
 	carbDioxCounter = 0;
-	waterLoopCounter = 0;
-	remainingNumH2O = waterCounter;
-	canvasModel.remove(releasedGasText);
-	canvasModel.remove(lowReactantsAlert);
-	canvasModel.remove(chlorophyllWaterAlert);
-	canvasModel.remove(chlorophyllLightAlert);
-	canvasModel.remove(extraCO2Alert);
-	canvasModel.remove(singleOxygenAlert);
-	canvasModel.remove(successMessage);
 	resetCascade();
-	resetCO2Objects();
-	resetH2OObjects();
-	resetPhotonObjects();
-	resetOxyObjects();
-	resetHydroObjects();
-	resetOxyGasObjects();
-	resetFullCarrierObjects();
-	resetHydroInputObjects();
-	resetWaterOutputObjects();
-	resetEnergyOutputObjects();
-	resetSingleOxyObjects();
-	initializePhase1Objects();
-	initializePhase2Objects();
-	initializePhase3Objects();
-	initializePhase4Objects();
-	initializeTrialData();
-	if (glucoseMade) {
-			canvasModel.remove(glucose);
-	}
 }
 
 function replay() {
-	$('#start, #resetAnimation, #lightOn, #co2Input, #h2oInput, #speedSwitch').prop('disabled', false);
-	$('#replay').prop('disabled', true);
-	$("#equation").html("&nbsp;&nbsp;" + carbDioxCounter + "&nbsp;&nbsp;&nbsp;&nbsp;CO<sub>2</sub>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;" +  "&nbsp;" + waterCounter + "&nbsp;&nbsp;&nbsp;&nbsp;H<sub>2</sub>O&nbsp;&nbsp;=&nbsp;&nbsp;???");
-	$("#totalH2O").html("");
-	$('#water').hide();
-	$("#lightOn").prop('checked', true);
-	canvasModel.setOverlayColor('rgba(0, 0, 0, 0)', canvasModel.renderAll.bind(canvasModel));
-	waterLoopCounter = 0;
-	remainingNumH2O = waterCounter;
-	canvasModel.remove(releasedGasText);
-	canvasModel.remove(lowReactantsAlert);
-	canvasModel.remove(chlorophyllWaterAlert);
-	canvasModel.remove(chlorophyllLightAlert);
-	canvasModel.remove(extraCO2Alert);
-	canvasModel.remove(singleOxygenAlert);
-	canvasModel.remove(successMessage);
 	resetCascade();
-	resetCO2Objects();
-	resetH2OObjects();
-	resetPhotonObjects();
-	resetOxyObjects();
-	resetHydroObjects();
-	resetOxyGasObjects();
-	resetFullCarrierObjects();
-	resetHydroInputObjects();
-	resetWaterOutputObjects();
-	resetEnergyOutputObjects();
-	resetSingleOxyObjects();
-	initializePhase1Objects();
-	initializePhase2Objects();
-	initializePhase3Objects();
-	initializePhase4Objects();
-	initializeTrialData();
-	if (glucoseMade) {
-			canvasModel.remove(glucose);
-	}
+}
+
+function resetPlaybackButtons() {
+	$('#replay, #resetAnimation').prop('disabled', false);
+	$('#pause').prop('disabled', true);
 }
 
 //function addCarbonDioxide() {draw.rect(150,30).x(430).y(150).radius(10).fill('yellow').stroke({width:2}).opacity(1).attr({
