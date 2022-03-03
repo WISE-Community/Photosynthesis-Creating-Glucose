@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 .controls, .legend {
-  max-width: 1000px;
+  width: 1000px;
+  max-width: 100%;
 }
 
 .model {
@@ -13,4 +14,8 @@
 .icon {
   height: 20px;
   width: auto;
+}
+
+.icon-lg {
+  height: 36px;
 }
