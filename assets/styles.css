@@ -2,20 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-.controls, .legend {
-  width: 1000px;
-  max-width: 100%;
-}
-
 .model {
   z-index: 1;
 }
 
 .icon {
-  height: 20px;
+  height: 24px;
   width: auto;
 }
 
 .icon-lg {
   height: 36px;
+}
+
+.legend-item {
+  @apply flex items-center gap-2 py-1;
 }
